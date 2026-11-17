@@ -1,0 +1,473 @@
+{
+  "version": 4,
+  "generator": "edge-tts",
+  "voices": {
+    "en": {
+      "voice": "en-US-AriaNeural",
+      "rate": "-8%"
+    },
+    "ar": {
+      "voice": "ar-EG-SalmaNeural",
+      "rate": "-5%"
+    },
+    "de": {
+      "voice": "de-DE-KatjaNeural",
+      "rate": "-8%"
+    },
+    "fr": {
+      "voice": "fr-FR-DeniseNeural",
+      "rate": "-8%"
+    }
+  },
+  "clips": [
+    {
+      "path": "en/q1.m4a",
+      "text": "Can you sing the alphabet song?"
+    },
+    {
+      "path": "en/q1-v2.m4a",
+      "text": "Can you sing the alphabet for me?"
+    },
+    {
+      "path": "en/q1-v3.m4a",
+      "text": "Let’s hear your alphabet song."
+    },
+    {
+      "path": "en/q2.m4a",
+      "text": "Tell us five animals that live in the sea."
+    },
+    {
+      "path": "en/q2-v2.m4a",
+      "text": "Which five animals live in the sea?"
+    },
+    {
+      "path": "en/q2-v3.m4a",
+      "text": "Can you name five sea animals?"
+    },
+    {
+      "path": "en/q3.m4a",
+      "text": "Tell us five animals that live on land."
+    },
+    {
+      "path": "en/q3-v2.m4a",
+      "text": "Which five animals live on land?"
+    },
+    {
+      "path": "en/q3-v3.m4a",
+      "text": "Can you name five land animals?"
+    },
+    {
+      "path": "en/q4.m4a",
+      "text": "Tell us five colors."
+    },
+    {
+      "path": "en/q4-v2.m4a",
+      "text": "Can you tell me five colors?"
+    },
+    {
+      "path": "en/q4-v3.m4a",
+      "text": "Which five colors do you know?"
+    },
+    {
+      "path": "en/q5.m4a",
+      "text": "Tell us five shapes."
+    },
+    {
+      "path": "en/q5-v2.m4a",
+      "text": "Can you tell me five shapes?"
+    },
+    {
+      "path": "en/q5-v3.m4a",
+      "text": "Which five shapes do you know?"
+    },
+    {
+      "path": "en/praise1.mp3",
+      "text": "Nice effort!"
+    },
+    {
+      "path": "en/praise2.mp3",
+      "text": "Thanks for practicing!"
+    },
+    {
+      "path": "en/praise3.mp3",
+      "text": "Thanks for trying!"
+    },
+    {
+      "path": "en/praise4.mp3",
+      "text": "Keep it up!"
+    },
+    {
+      "path": "en/praise5.mp3",
+      "text": "Lovely practice!"
+    },
+    {
+      "path": "en/praise6.mp3",
+      "text": "Keep exploring!"
+    },
+    {
+      "path": "en/praise7.mp3",
+      "text": "You’re getting braver!"
+    },
+    {
+      "path": "en/praise8.mp3",
+      "text": "Let’s keep going!"
+    },
+    {
+      "path": "en/question-cheer1.mp3",
+      "text": "You finished that question! High five!"
+    },
+    {
+      "path": "en/question-cheer2.mp3",
+      "text": "One more question done! Wonderful practice!"
+    },
+    {
+      "path": "en/complete.mp3",
+      "text": "You answered all five questions! What wonderful practice. High five!"
+    },
+    {
+      "path": "en/lesson-complete.mp3",
+      "text": "You finished your activity and earned a star! Wonderful practice!"
+    },
+    {
+      "path": "en/school-complete.mp3",
+      "text": "You practiced all five school words! High five!"
+    },
+    {
+      "path": "ar/q1.m4a",
+      "text": "هل يمكنك أن تقول أنشودة الحروف؟"
+    },
+    {
+      "path": "ar/q1-v2.m4a",
+      "text": "هل تغني لي أنشودة الحروف؟"
+    },
+    {
+      "path": "ar/q1-v3.m4a",
+      "text": "هيا نسمع أنشودة الحروف منك."
+    },
+    {
+      "path": "ar/q2.m4a",
+      "text": "اذكر خمسة حيوانات تعيش في البحر."
+    },
+    {
+      "path": "ar/q2-v2.m4a",
+      "text": "ما خمسة الحيوانات التي تعيش في البحر؟"
+    },
+    {
+      "path": "ar/q2-v3.m4a",
+      "text": "هل تسمي لي خمسة حيوانات بحرية؟"
+    },
+    {
+      "path": "ar/q3.m4a",
+      "text": "اذكر خمسة حيوانات تعيش على البر."
+    },
+    {
+      "path": "ar/q3-v2.m4a",
+      "text": "ما خمسة الحيوانات التي تعيش على البر؟"
+    },
+    {
+      "path": "ar/q3-v3.m4a",
+      "text": "هل تسمي لي خمسة حيوانات برية؟"
+    },
+    {
+      "path": "ar/q4.m4a",
+      "text": "اذكر خمسة ألوان."
+    },
+    {
+      "path": "ar/q4-v2.m4a",
+      "text": "هل تذكر لي خمسة ألوان؟"
+    },
+    {
+      "path": "ar/q4-v3.m4a",
+      "text": "ما الألوان الخمسة التي تعرفها؟"
+    },
+    {
+      "path": "ar/q5.m4a",
+      "text": "اذكر خمسة أشكال."
+    },
+    {
+      "path": "ar/q5-v2.m4a",
+      "text": "هل تذكر لي خمسة أشكال؟"
+    },
+    {
+      "path": "ar/q5-v3.m4a",
+      "text": "ما الأشكال الخمسة التي تعرفها؟"
+    },
+    {
+      "path": "ar/praise1.mp3",
+      "text": "محاولة جميلة!"
+    },
+    {
+      "path": "ar/praise2.mp3",
+      "text": "شكراً على التدريب!"
+    },
+    {
+      "path": "ar/praise3.mp3",
+      "text": "شكراً على المحاولة!"
+    },
+    {
+      "path": "ar/praise4.mp3",
+      "text": "واصل التدريب!"
+    },
+    {
+      "path": "ar/praise5.mp3",
+      "text": "تدريب رائع!"
+    },
+    {
+      "path": "ar/praise6.mp3",
+      "text": "واصل الاكتشاف!"
+    },
+    {
+      "path": "ar/praise7.mp3",
+      "text": "أنت تزداد شجاعة!"
+    },
+    {
+      "path": "ar/praise8.mp3",
+      "text": "هيا نكمل!"
+    },
+    {
+      "path": "ar/question-cheer1.mp3",
+      "text": "أنهيت هذا السؤال! هيا نرفع أيدينا!"
+    },
+    {
+      "path": "ar/question-cheer2.mp3",
+      "text": "أنهيت سؤالاً آخر! تدريب رائع!"
+    },
+    {
+      "path": "ar/complete.mp3",
+      "text": "أجبت عن الأسئلة الخمسة! كان تدريباً رائعاً. هيا نحتفل!"
+    },
+    {
+      "path": "ar/lesson-complete.mp3",
+      "text": "أنهيت النشاط وحصلت على نجمة! تدريب رائع!"
+    },
+    {
+      "path": "ar/school-complete.mp3",
+      "text": "تدرّبت على كلمات المدرسة الخمس! هيا نحتفل!"
+    },
+    {
+      "path": "de/q1.m4a",
+      "text": "Kannst du das Alphabet aufsagen?"
+    },
+    {
+      "path": "de/q1-v2.m4a",
+      "text": "Kannst du mir das Alphabet sagen?"
+    },
+    {
+      "path": "de/q1-v3.m4a",
+      "text": "Lass uns dein Alphabet hören."
+    },
+    {
+      "path": "de/q2.m4a",
+      "text": "Nenne fünf Tiere, die im Meer leben."
+    },
+    {
+      "path": "de/q2-v2.m4a",
+      "text": "Welche fünf Tiere leben im Meer?"
+    },
+    {
+      "path": "de/q2-v3.m4a",
+      "text": "Kennst du fünf Meerestiere?"
+    },
+    {
+      "path": "de/q3.m4a",
+      "text": "Nenne fünf Tiere, die an Land leben."
+    },
+    {
+      "path": "de/q3-v2.m4a",
+      "text": "Welche fünf Tiere leben an Land?"
+    },
+    {
+      "path": "de/q3-v3.m4a",
+      "text": "Kennst du fünf Landtiere?"
+    },
+    {
+      "path": "de/q4.m4a",
+      "text": "Nenne fünf Farben."
+    },
+    {
+      "path": "de/q4-v2.m4a",
+      "text": "Kannst du mir fünf Farben nennen?"
+    },
+    {
+      "path": "de/q4-v3.m4a",
+      "text": "Welche fünf Farben kennst du?"
+    },
+    {
+      "path": "de/q5.m4a",
+      "text": "Nenne fünf Formen."
+    },
+    {
+      "path": "de/q5-v2.m4a",
+      "text": "Kannst du mir fünf Formen nennen?"
+    },
+    {
+      "path": "de/q5-v3.m4a",
+      "text": "Welche fünf Formen kennst du?"
+    },
+    {
+      "path": "de/praise1.mp3",
+      "text": "Toll geübt!"
+    },
+    {
+      "path": "de/praise2.mp3",
+      "text": "Danke fürs Üben!"
+    },
+    {
+      "path": "de/praise3.mp3",
+      "text": "Danke fürs Ausprobieren!"
+    },
+    {
+      "path": "de/praise4.mp3",
+      "text": "Weiter so!"
+    },
+    {
+      "path": "de/praise5.mp3",
+      "text": "Das war eine schöne Übung!"
+    },
+    {
+      "path": "de/praise6.mp3",
+      "text": "Entdecke weiter!"
+    },
+    {
+      "path": "de/praise7.mp3",
+      "text": "Du wirst immer mutiger!"
+    },
+    {
+      "path": "de/praise8.mp3",
+      "text": "Lass uns weitermachen!"
+    },
+    {
+      "path": "de/question-cheer1.mp3",
+      "text": "Du hast diese Frage geschafft! Gib mir fünf!"
+    },
+    {
+      "path": "de/question-cheer2.mp3",
+      "text": "Noch eine Frage geschafft! Toll geübt!"
+    },
+    {
+      "path": "de/complete.mp3",
+      "text": "Du hast alle fünf Fragen beantwortet! Das war eine tolle Übung. Gib mir fünf!"
+    },
+    {
+      "path": "de/lesson-complete.mp3",
+      "text": "Du hast die Übung geschafft und einen Stern verdient! Toll geübt!"
+    },
+    {
+      "path": "de/school-complete.mp3",
+      "text": "Du hast alle fünf Schulwörter geübt! Gib mir fünf!"
+    },
+    {
+      "path": "fr/q1.m4a",
+      "text": "Peux-tu chanter la chanson de l’alphabet ?"
+    },
+    {
+      "path": "fr/q1-v2.m4a",
+      "text": "Peux-tu me chanter l’alphabet ?"
+    },
+    {
+      "path": "fr/q1-v3.m4a",
+      "text": "On écoute ta chanson de l’alphabet."
+    },
+    {
+      "path": "fr/q2.m4a",
+      "text": "Nomme cinq animaux qui vivent dans la mer."
+    },
+    {
+      "path": "fr/q2-v2.m4a",
+      "text": "Quels sont les cinq animaux qui vivent dans la mer ?"
+    },
+    {
+      "path": "fr/q2-v3.m4a",
+      "text": "Peux-tu me dire cinq animaux de la mer ?"
+    },
+    {
+      "path": "fr/q3.m4a",
+      "text": "Nomme cinq animaux qui vivent sur la terre."
+    },
+    {
+      "path": "fr/q3-v2.m4a",
+      "text": "Quels sont les cinq animaux qui vivent sur la terre ?"
+    },
+    {
+      "path": "fr/q3-v3.m4a",
+      "text": "Peux-tu me dire cinq animaux terrestres ?"
+    },
+    {
+      "path": "fr/q4.m4a",
+      "text": "Nomme cinq couleurs."
+    },
+    {
+      "path": "fr/q4-v2.m4a",
+      "text": "Peux-tu me dire cinq couleurs ?"
+    },
+    {
+      "path": "fr/q4-v3.m4a",
+      "text": "Quelles sont les cinq couleurs que tu connais ?"
+    },
+    {
+      "path": "fr/q5.m4a",
+      "text": "Nomme cinq formes."
+    },
+    {
+      "path": "fr/q5-v2.m4a",
+      "text": "Peux-tu me dire cinq formes ?"
+    },
+    {
+      "path": "fr/q5-v3.m4a",
+      "text": "Quelles sont les cinq formes que tu connais ?"
+    },
+    {
+      "path": "fr/praise1.mp3",
+      "text": "Belle tentative !"
+    },
+    {
+      "path": "fr/praise2.mp3",
+      "text": "Merci de t’entraîner !"
+    },
+    {
+      "path": "fr/praise3.mp3",
+      "text": "Merci d’avoir essayé !"
+    },
+    {
+      "path": "fr/praise4.mp3",
+      "text": "Continue comme ça !"
+    },
+    {
+      "path": "fr/praise5.mp3",
+      "text": "C’est agréable de s’entraîner !"
+    },
+    {
+      "path": "fr/praise6.mp3",
+      "text": "Continue à découvrir !"
+    },
+    {
+      "path": "fr/praise7.mp3",
+      "text": "Tu prends confiance !"
+    },
+    {
+      "path": "fr/praise8.mp3",
+      "text": "On continue !"
+    },
+    {
+      "path": "fr/question-cheer1.mp3",
+      "text": "Tu as terminé cette question ! Tape m’en cinq !"
+    },
+    {
+      "path": "fr/question-cheer2.mp3",
+      "text": "Encore une question terminée ! Tu as bien participé !"
+    },
+    {
+      "path": "fr/complete.mp3",
+      "text": "Tu as répondu aux cinq questions ! Tu as bien participé. Tape m’en cinq !"
+    },
+    {
+      "path": "fr/lesson-complete.mp3",
+      "text": "Tu as terminé l’activité et gagné une étoile ! Tu as bien participé !"
+    },
+    {
+      "path": "fr/school-complete.mp3",
+      "text": "Tu as pratiqué les cinq mots pour l’école ! Tape m’en cinq !"
+    }
+  ],
+  "personalization": "Child names appear on screen; recordings contain no personal data."
+}

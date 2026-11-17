@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e55262">
+  <meta name="description" content="A playful English, Arabic, German, and French school interview practice app for little learners.">
+  <title>Little Learner — Interview Practice</title>
+  <style>
+    :root {
+      --bg: oklch(0.975 0.008 210);
+      --surface: oklch(1 0 0);
+      --ink: oklch(0.245 0.035 252);
+      --muted: oklch(0.47 0.035 252);
+      --primary: oklch(0.58 0.19 12);
+      --primary-dark: oklch(0.46 0.16 8);
+      --teal: oklch(0.64 0.12 190);
+      --teal-dark: oklch(0.42 0.09 190);
+      --yellow: oklch(0.86 0.16 88);
+      --yellow-soft: oklch(0.96 0.07 88);
+      --sky: oklch(0.88 0.07 225);
+      --lavender: oklch(0.91 0.065 305);
+      --line: oklch(0.9 0.02 240);
+      --success: oklch(0.58 0.14 155);
+      --focus: oklch(0.65 0.16 250);
+      --shadow: 0 5px 0 oklch(0.82 0.03 230);
+      --font: ui-rounded, "SF Pro Rounded", "Nunito", "Noto Sans Arabic", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 4%, oklch(0.93 0.08 15 / 0.38) 0 8rem, transparent 8.1rem),
+        radial-gradient(circle at 92% 12%, oklch(0.9 0.08 210 / 0.55) 0 10rem, transparent 10.1rem),
+        var(--bg);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; }
+    button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, [tabindex]:focus-visible {
+      outline: 4px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .app {
+      width: min(100%, 820px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 18px max(28px, env(safe-area-inset-bottom));
+    }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 9px; font-weight: 900; font-size: 1.02rem; }
+    .brand-mark {
+      display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px;
+      background: var(--yellow); color: var(--ink); transform: rotate(-3deg); font-size: 1.3rem;
+    }
+    .language-switch {
+      display: flex; gap: 4px; padding: 4px; background: var(--surface); border-radius: 14px;
+      box-shadow: 0 2px 0 var(--line);
+    }
+    .language-switch button {
+      min-height: 42px; min-width: 84px; padding: 0 14px; border: 0; border-radius: 10px;
+      background: transparent; color: var(--muted); font-weight: 800; cursor: pointer;
+    }
+    .language-switch button[aria-selected="true"] { background: var(--ink); color: var(--surface); }
+
+    main { padding-top: clamp(34px, 8vw, 68px); }
+    .hero { text-align: center; max-width: 650px; margin: 0 auto 30px; }
+    .hello-chip {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 7px 13px;
+      border-radius: 999px; background: var(--yellow-soft); color: oklch(0.37 0.09 70); font-weight: 850;
+    }
+    h1 { margin: 13px 0 10px; font-size: clamp(2rem, 8vw, 3.65rem); line-height: 0.98; letter-spacing: -0.035em; text-wrap: balance; }
+    .hero p { margin: 0 auto; color: var(--muted); max-width: 42ch; font-size: clamp(1rem, 3vw, 1.18rem); line-height: 1.5; text-wrap: pretty; }
+
+    .progress-strip {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      background: var(--surface); padding: 13px 16px; border-radius: 14px; box-shadow: var(--shadow); margin: 0 auto 24px;
+    }
+    .progress-copy { font-weight: 850; font-size: 0.98rem; }
+    .stars { display: flex; gap: 5px; direction: ltr; }
+    .star { color: oklch(0.78 0.02 250); font-size: 1.35rem; line-height: 1; }
+    .star.earned { color: oklch(0.79 0.17 76); filter: drop-shadow(0 1px 0 oklch(0.55 0.12 60)); }
+
+    .activity-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .activity {
+      width: 100%; min-height: 150px; border: 0; border-radius: 16px; padding: 18px;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 10px; text-align: start; color: var(--ink);
+      cursor: pointer; position: relative; transition: transform 180ms ease, filter 180ms ease;
+    }
+    .activity:hover { filter: brightness(0.985); transform: translateY(-2px); }
+    .activity:active { transform: translateY(2px); }
+    .activity[data-kind="alphabet"] { grid-column: 1 / -1; min-height: 112px; flex-direction: row; align-items: center; justify-content: flex-start; background: oklch(0.92 0.07 15); }
+    .activity[data-kind="sea"] { background: var(--sky); }
+    .activity[data-kind="land"] { background: oklch(0.92 0.08 135); }
+    .activity[data-kind="colors"] { background: var(--lavender); }
+    .activity[data-kind="shapes"] { background: var(--yellow-soft); }
+    .activity-icon {
+      flex: 0 0 62px; width: 62px; height: 62px; display: grid; place-items: center;
+      border-radius: 14px; background: oklch(1 0 0 / 0.72); font-size: 2.05rem;
+    }
+    .activity-copy { min-width: 0; flex: 1; }
+    .activity-copy strong { display: block; font-size: clamp(1.15rem, 4vw, 1.38rem); margin-bottom: 4px; }
+    .activity-copy span { display: block; color: oklch(0.39 0.035 252); font-size: 0.95rem; line-height: 1.35; }
+    .activity-arrow { position: absolute; inset-block-end: 16px; inset-inline-end: 18px; font-size: 1.45rem; font-weight: 900; }
+    [dir="rtl"] .activity-arrow { transform: rotate(180deg); }
+    .done-badge {
+      position: absolute; inset-block-start: 9px; inset-inline-end: 10px; display: none;
+      background: var(--success); color: white; width: 27px; height: 27px; border-radius: 999px;
+      place-items: center; font-weight: 900;
+    }
+    .activity.completed .done-badge { display: grid; }
+
+    .interview-card {
+      margin-top: 18px; padding: 20px; border-radius: 16px; background: var(--ink); color: white;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .interview-card .face { flex: 0 0 62px; width: 62px; height: 62px; object-fit: contain; filter: drop-shadow(0 4px 0 oklch(0.12 0.02 250 / .22)); }
+    .interview-card div { flex: 1; }
+    .interview-card h2 { margin: 0 0 5px; font-size: 1.35rem; }
+    .interview-card p { margin: 0; color: oklch(0.86 0.02 250); line-height: 1.4; }
+    .interview-card button {
+      border: 0; border-radius: 999px; background: var(--primary); color: white; min-height: 52px;
+      padding: 0 20px; font-weight: 900; cursor: pointer; white-space: nowrap;
+    }
+
+    .parent-row { display: flex; justify-content: center; margin-top: 24px; }
+    .text-button { border: 0; background: transparent; color: var(--muted); min-height: 48px; padding: 8px 14px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; font-weight: 700; }
+
+    .screen { animation: screen-in 220ms cubic-bezier(.22,1,.36,1); }
+    .lesson-head { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .back {
+      width: 48px; height: 48px; border: 0; border-radius: 999px; background: var(--surface); color: var(--ink);
+      box-shadow: 0 3px 0 var(--line); font-size: 1.45rem; font-weight: 900; cursor: pointer;
+    }
+    [dir="rtl"] .back { transform: rotate(180deg); }
+    .lesson-head h1 { margin: 0; font-size: clamp(1.7rem, 6vw, 2.6rem); flex: 1; }
+    .lesson-count { color: var(--muted); font-weight: 850; white-space: nowrap; }
+
+    .learning-stage {
+      background: var(--surface); min-height: 470px; border-radius: 16px; padding: clamp(22px, 6vw, 42px);
+      box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .name-stage { min-height: min(620px, calc(100vh - 150px)); justify-content: center; }
+    .name-mascot { width: clamp(150px, 42vw, 220px); max-height: 220px; object-fit: contain; filter: drop-shadow(0 8px 8px oklch(0.3 0.05 55 / .16)); }
+    .name-stage h1 { margin: 8px 0 6px; font-size: clamp(2rem, 9vw, 3.3rem); line-height: 1.05; text-wrap: balance; }
+    .name-stage > p { margin: 0; max-width: 470px; color: var(--muted); font-weight: 750; line-height: 1.5; text-wrap: balance; }
+    .name-form { width: min(100%, 390px); display: grid; gap: 12px; margin-top: 22px; text-align: start; }
+    .name-form label { font-weight: 900; }
+    .name-form input { width: 100%; min-height: 64px; box-sizing: border-box; border: 3px solid var(--ink); border-radius: 16px; padding: 0 18px; background: white; color: var(--ink); font: inherit; font-size: 1.25rem; font-weight: 850; }
+    .name-form input:focus { outline: 4px solid var(--sky); outline-offset: 3px; }
+    .name-form input::placeholder { color: var(--muted); opacity: .78; }
+    .name-form .primary-button { width: 100%; }
+    .stage-prompt { color: var(--muted); font-weight: 800; margin: 0 0 16px; }
+    .big-visual {
+      min-height: 170px; display: grid; place-items: center; font-size: clamp(6rem, 22vw, 9.5rem);
+      line-height: 1; margin: 4px 0 12px;
+    }
+    .shape-visual { font-family: Georgia, serif; }
+    .word { max-width: 100%; font-size: clamp(2rem, 9vw, 3.6rem); line-height: 1.05; margin: 0; letter-spacing: -0.025em; overflow-wrap: anywhere; text-wrap: balance; }
+    .word.long-word { font-size: clamp(1.4rem, 7vw, 2.3rem); white-space: nowrap; overflow-wrap: normal; }
+    .say-hint { color: var(--muted); font-size: 1rem; margin: 10px 0 22px; }
+    .lesson-reward {
+      width: min(100%, 390px); min-height: 108px; margin: 0 0 18px; padding: 10px 14px;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      border-radius: 16px; background: var(--bg);
+    }
+    .lesson-mascot { width: 96px; height: 96px; object-fit: contain; flex: 0 0 96px; transform-origin: 50% 90%; filter: drop-shadow(0 5px 5px oklch(0.3 0.05 55 / .15)); }
+    .lesson-mascot.speaking { animation: mascot-talk 620ms ease-in-out infinite; }
+    .lesson-feed-copy { display: grid; justify-items: center; gap: 6px; min-width: 0; }
+    .lesson-feed-copy strong { line-height: 1.25; text-wrap: balance; }
+    .lesson-cookie { width: 60px; height: 60px; border: 0; border-radius: 50%; background: var(--yellow-soft); box-shadow: 0 4px 0 oklch(0.78 0.1 78); font-size: 2rem; cursor: pointer; transition: transform 180ms cubic-bezier(.22,1,.36,1), opacity 180ms ease, box-shadow 180ms ease; }
+    .lesson-cookie:active { transform: translateY(3px); box-shadow: 0 1px 0 oklch(0.78 0.1 78); }
+    .lesson-cookie.fed { opacity: .22; transform: scale(.78); box-shadow: none; cursor: default; }
+    .lesson-feed-status { min-height: 20px; color: var(--teal-dark); font-size: .88rem; font-weight: 900; }
+    .color-swatch {
+      width: clamp(112px, 32vw, 156px); height: clamp(112px, 32vw, 156px); border-radius: 50%;
+      background: var(--swatch); box-shadow: inset 0 0 0 5px oklch(1 0 0 / 0.78), 0 5px 0 var(--line);
+    }
+    .set-badge { display: inline-flex; align-items: center; min-height: 32px; padding: 5px 11px; border-radius: 999px; background: var(--yellow-soft); color: oklch(0.38 0.08 72); font-weight: 900; margin-bottom: 4px; }
+    .action-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; width: 100%; margin-top: auto; }
+    .primary-button, .listen-button, .next-button {
+      min-height: 58px; border: 0; border-radius: 999px; padding: 0 22px; font-weight: 900; cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease;
+    }
+    .listen-button { background: var(--sky); color: oklch(0.31 0.08 220); }
+    .primary-button { background: var(--primary); color: white; }
+    .next-button { background: var(--ink); color: white; }
+    .primary-button:active, .listen-button:active, .next-button:active { transform: translateY(2px); }
+
+    .alphabet-stage { align-items: stretch; }
+    .alphabet-stage .stage-prompt { text-align: center; }
+    .alphabet-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; direction: ltr; margin: 10px 0 28px; }
+    .letter {
+      display: grid; place-items: center; aspect-ratio: 1; border-radius: 10px; background: oklch(0.95 0.025 20);
+      color: var(--ink); border: 0; cursor: pointer; font-size: clamp(1.05rem, 4vw, 1.55rem); font-weight: 900; transition: transform 140ms ease, background 140ms ease;
+    }
+    .letter:hover { background: oklch(0.92 0.055 20); }
+    .letter:active { transform: translateY(2px); }
+    .letter.active { background: var(--yellow); transform: translateY(-4px) scale(1.06); }
+    .arabic-grid { grid-template-columns: repeat(7, 1fr); direction: rtl; }
+    .alphabet-now { min-height: 32px; margin: -14px 0 18px; color: var(--teal-dark); font-size: 1.05rem; font-weight: 900; text-align: center; }
+    .voice-controls {
+      display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px;
+      width: 100%; margin: 0 0 18px; color: var(--muted); font-weight: 850;
+    }
+    .voice-controls button {
+      min-height: 44px; padding: 0 15px; border: 0; border-radius: 999px; background: var(--bg);
+      color: var(--muted); font-weight: 900; cursor: pointer;
+    }
+    .voice-controls button[aria-pressed="true"] { background: var(--ink); color: white; }
+    .song-panel {
+      width: 100%; margin-top: 22px; padding-top: 22px; border-top: 2px solid var(--line); text-align: center;
+    }
+    .song-panel h2 { margin: 0 0 6px; font-size: 1.25rem; }
+    .song-panel summary { cursor: pointer; font-size: 1.15rem; font-weight: 900; padding: 8px; min-height: 44px; }
+    .song-panel summary:focus-visible { outline: 4px solid var(--focus); outline-offset: 2px; }
+    .song-panel p { margin: 0 auto 14px; max-width: 42ch; color: var(--muted); line-height: 1.45; }
+    .song-link { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-weight: 900; max-width: 100%; }
+    .song-link:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+    .song-credit { display: block; margin-top: 9px; color: var(--muted); font-size: .84rem; }
+
+    .celebration { justify-content: center; min-height: 470px; }
+    .celebration .trophy { font-size: 6.5rem; animation: pop 450ms cubic-bezier(.22,1,.36,1); }
+    .celebration h2 { font-size: clamp(2rem, 8vw, 3.4rem); margin: 12px 0 8px; letter-spacing: -0.03em; }
+    .celebration p { color: var(--muted); font-size: 1.1rem; max-width: 35ch; margin: 0 0 28px; }
+    .choice-actions { display: flex; flex-direction: column; gap: 10px; width: min(100%, 360px); }
+    .choice-actions button { width: 100%; }
+
+    .interview-stage { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: clamp(18px, 5vw, 38px); text-align: center; overflow: hidden; }
+    .interview-scene { display: grid; grid-template-columns: minmax(190px, .8fr) minmax(0, 1.2fr); align-items: center; gap: clamp(16px, 4vw, 34px); }
+    .mascot-stage { min-height: 280px; display: grid; place-items: end center; position: relative; align-self: stretch; }
+    .mascot-stage::after { content: ""; position: absolute; z-index: 0; inset-inline: 9%; bottom: 4px; height: 24px; border-radius: 50%; background: oklch(0.39 0.04 250 / .13); filter: blur(5px); }
+    .mascot-image { position: relative; z-index: 1; width: min(100%, 260px); max-height: 315px; object-fit: contain; transform-origin: 50% 90%; animation: mascot-breathe 3.8s ease-in-out infinite; filter: drop-shadow(0 8px 9px oklch(0.3 0.05 55 / .18)); }
+    .mascot-image.speaking { animation: mascot-talk 620ms ease-in-out infinite; }
+    .question-panel { min-width: 0; display: flex; flex-direction: column; align-items: center; }
+    .speech-bubble { width: 100%; position: relative; padding: clamp(20px, 4vw, 32px); border: 3px solid var(--ink); border-radius: 16px; background: var(--yellow-soft); box-shadow: 0 5px 0 var(--line); }
+    .speech-bubble::before { content: ""; position: absolute; top: 52%; inset-inline-start: -15px; width: 25px; height: 25px; background: var(--yellow-soft); border-inline-start: 3px solid var(--ink); border-block-end: 3px solid var(--ink); transform: translateY(-50%) rotate(45deg); }
+    [dir="rtl"] .speech-bubble::before { transform: translateY(-50%) rotate(45deg); }
+    .question-number { color: var(--teal-dark); font-weight: 900; margin-bottom: 10px; }
+    .question { font-size: clamp(1.65rem, 5vw, 2.65rem); line-height: 1.15; text-wrap: balance; margin: 0 auto 22px; max-width: 17ch; }
+    .sound-waves { display: inline-flex; align-items: center; gap: 4px; height: 18px; margin-bottom: 10px; opacity: 0; transition: opacity 160ms ease; }
+    .sound-waves span { width: 4px; border-radius: 999px; background: var(--primary); animation: sound-wave 650ms ease-in-out infinite alternate; }
+    .sound-waves span:nth-child(1), .sound-waves span:nth-child(3) { height: 8px; }
+    .sound-waves span:nth-child(2) { height: 17px; animation-delay: -280ms; }
+    .mascot-speaking .sound-waves { opacity: 1; }
+    .answer-area { min-height: 90px; display: grid; place-items: center; margin: 14px 0; }
+    .answer-placeholder { color: var(--muted); font-weight: 750; }
+    .answer-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .answer-chip { padding: 9px 13px; border-radius: 999px; background: var(--yellow-soft); font-weight: 900; }
+    .treat-zone { padding: 14px 12px 16px; border-radius: 16px; background: var(--bg); }
+    .treat-prompt { margin: 0 0 10px; color: var(--ink); font-weight: 900; line-height: 1.35; }
+    .treat-tray { display: flex; justify-content: center; gap: clamp(5px, 2vw, 10px); direction: ltr; }
+    .treat-button { width: clamp(48px, 13vw, 58px); height: clamp(48px, 13vw, 58px); border: 0; border-radius: 50%; background: var(--yellow-soft); box-shadow: 0 4px 0 oklch(0.78 0.1 78); font-size: clamp(1.45rem, 6vw, 1.9rem); cursor: pointer; transition: transform 180ms cubic-bezier(.22,1,.36,1), opacity 180ms ease, box-shadow 180ms ease; }
+    .treat-button:active { transform: translateY(3px); box-shadow: 0 1px 0 oklch(0.78 0.1 78); }
+    .treat-button.fed { opacity: .22; transform: scale(.78); box-shadow: none; cursor: default; }
+    .treat-counter { min-height: 24px; margin-top: 9px; color: var(--teal-dark); font-weight: 900; }
+    .flying-treat { position: fixed; z-index: 40; display: grid; place-items: center; pointer-events: none; font-size: 2rem; }
+    .mascot-image.celebrate { animation: mascot-nom 380ms cubic-bezier(.22,1,.36,1); }
+    .interview-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+    [hidden] { display: none !important; }
+    button:disabled { cursor: default; }
+    .answer-recorder { margin: 18px 0; padding: 18px 0; border-block: 2px solid var(--line); }
+    .recorder-intro h3 { margin: 0 0 5px; font-size: 1.12rem; }
+    .recorder-intro p { margin: 0 0 14px; color: var(--muted); line-height: 1.4; }
+    .recording-actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .record-button { min-height: 58px; border: 2px solid var(--primary-dark); border-radius: 999px; padding: 12px 20px; background: white; color: var(--primary-dark); font: inherit; font-weight: 900; cursor: pointer; }
+    .record-button.is-recording { background: var(--primary-dark); color: white; }
+    .record-button:disabled, .recording-actions button:disabled { opacity: .6; }
+    .record-status { min-height: 24px; margin: 12px 0 6px; color: var(--teal-dark); font-weight: 750; line-height: 1.4; }
+    .recording-privacy { display: block; color: var(--muted); font-size: .85rem; line-height: 1.4; }
+    .recording-privacy summary { cursor: pointer; width: fit-content; margin: auto; padding: 8px 12px; min-height: 44px; display: list-item; }
+    .recording-privacy summary:focus-visible { outline: 4px solid var(--focus); outline-offset: 2px; }
+    .recording-privacy[open] span { display: block; padding-bottom: 8px; }
+    .auto-feeding { margin: 0 0 16px; }
+    .auto-feeding .listen-button { width: 100%; min-height: 56px; }
+    .auto-feed-status { margin: 9px 0 6px; color: var(--teal-dark); font-weight: 750; line-height: 1.4; }
+    .auto-feeding button[aria-pressed="true"] { background: var(--ink); color: white; }
+    .milestone-feedback { color: var(--teal-dark); font-size: 1.05rem; font-weight: 900; line-height: 1.4; margin: 18px 0 0; }
+    .milestone-feedback:empty { display: none; }
+    .celebrating .mascot-image, .celebrating .trophy { animation: pop 500ms cubic-bezier(.22,1,.36,1); }
+
+    dialog { border: 0; border-radius: 16px; padding: 0; width: min(calc(100% - 32px), 520px); color: var(--ink); box-shadow: 0 18px 50px oklch(0.18 0.03 250 / 0.3); }
+    dialog::backdrop { background: oklch(0.18 0.03 250 / 0.62); }
+    .dialog-inner { padding: 24px; }
+    .dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .dialog-head h2 { margin: 0; font-size: 1.5rem; }
+    .close-dialog { width: 44px; height: 44px; border-radius: 999px; border: 0; background: var(--bg); font-size: 1.4rem; cursor: pointer; }
+    .dialog-inner p { color: var(--muted); line-height: 1.55; }
+    .tips { padding-inline-start: 22px; color: var(--ink); line-height: 1.55; }
+    .tips li + li { margin-top: 8px; }
+    .secondary-button, .danger-button { width: 100%; min-height: 52px; border-radius: 12px; font-weight: 900; cursor: pointer; }
+    .secondary-button { margin-bottom: 10px; border: 0; background: var(--sky); color: var(--ink); }
+    .danger-button { border: 2px solid var(--primary); background: white; color: var(--primary-dark); }
+
+    .toast {
+      position: fixed; inset-inline: 18px; bottom: max(20px, env(safe-area-inset-bottom)); margin: auto;
+      width: fit-content; max-width: calc(100% - 36px); padding: 12px 18px; border-radius: 999px;
+      background: var(--ink); color: white; font-weight: 800; opacity: 0; transform: translateY(20px); pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @keyframes screen-in { from { opacity: 0; transform: translateY(10px); } }
+    @keyframes pop { 0% { transform: scale(.7); } 70% { transform: scale(1.08); } }
+    @keyframes mascot-breathe { 0%, 100% { transform: translateY(0) rotate(-.5deg); } 50% { transform: translateY(-5px) rotate(.5deg); } }
+    @keyframes mascot-talk { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-6px) rotate(1deg); } }
+    @keyframes mascot-nom { 0% { transform: scale(1); } 45% { transform: scale(1.06) rotate(1deg); } 100% { transform: scale(1); } }
+    @keyframes sound-wave { from { transform: scaleY(.65); } to { transform: scaleY(1.15); } }
+
+    @media (max-width: 580px) {
+      .topbar { flex-wrap: wrap; }
+      .brand { width: 100%; }
+      .language-switch { width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .language-switch button { min-width: 0; padding: 0 3px; font-size: .86rem; }
+      main { padding-top: 24px; }
+      .hero { margin-bottom: 20px; }
+      .hero h1 { font-size: 2.35rem; }
+      .hero p { font-size: 1rem; }
+      .progress-strip { margin-bottom: 16px; }
+      .activity-list { gap: 10px; }
+      .activity { min-height: 134px; padding: 14px; }
+      .activity-icon { width: 56px; height: 56px; flex-basis: 56px; font-size: 1.8rem; }
+      .activity-copy strong { font-size: 1.05rem; }
+      .activity-copy span { display: none; }
+      .activity-arrow { inset-block-end: 12px; inset-inline-end: 14px; }
+      .interview-card { align-items: flex-start; flex-wrap: wrap; }
+      .interview-card button { width: 100%; }
+      .interview-card .face { width: 54px; height: 54px; flex-basis: 54px; }
+      .alphabet-grid { gap: 5px; }
+      .letter { border-radius: 8px; }
+      .song-panel { margin-top: 18px; padding-top: 18px; }
+      .learning-stage { min-height: calc(100vh - 175px); }
+      .big-visual { min-height: 150px; font-size: 7.4rem; }
+      .word { font-size: clamp(1.9rem, 9vw, 2.65rem); }
+      .lesson-reward { min-height: 96px; padding: 8px 12px; gap: 12px; }
+      .lesson-mascot { width: 82px; height: 82px; flex-basis: 82px; }
+      .lesson-cookie { width: 56px; height: 56px; }
+      .action-row { flex-direction: column; }
+      .action-row button { width: 100%; min-height: 64px; font-size: 1.08rem; }
+      .lesson-head h1 { font-size: 1.8rem; }
+      .interview-stage { padding: 16px 14px 20px; }
+      .interview-scene { grid-template-columns: minmax(108px, .72fr) minmax(0, 1.28fr); gap: 10px; align-items: end; }
+      .mascot-stage { min-height: 215px; }
+      .mascot-image { width: 100%; max-height: 230px; }
+      .speech-bubble { padding: 16px 12px; }
+      .speech-bubble::before { inset-inline-start: -11px; width: 19px; height: 19px; }
+      .question-number { font-size: .82rem; margin-bottom: 7px; }
+      .question { font-size: clamp(1.35rem, 6.2vw, 1.85rem); margin-bottom: 15px; }
+      .speech-bubble .listen-button { min-height: 52px; padding: 0 14px; width: 100%; }
+      .answer-area { min-height: 74px; margin: 12px 0 4px; }
+      .interview-actions { flex-direction: column-reverse; }
+      .interview-actions button { width: 100%; min-height: 62px; font-size: 1.02rem; }
+      .recording-actions { flex-direction: column; gap: 8px; }
+      .recording-actions button { width: 100%; }
+    }
+
+    /* Keep each practice view together; allow scrolling on unusually small screens. */
+    .app { width: min(100%, 1120px); padding-block: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-bottom)); }
+    main { padding-top: 16px; }
+    .hero { margin-bottom: 16px; }
+    .hero h1 { font-size: 2.6rem; line-height: 1.05; margin: 8px 0; }
+    .hero p { max-width: 60ch; font-size: 1rem; }
+    .progress-strip { margin-bottom: 16px; padding: 12px 16px; }
+    .activity { min-height: 96px; flex-direction: row; align-items: center; padding: 16px; gap: 12px; }
+    .activity[data-kind="alphabet"] { min-height: 88px; }
+    .activity-copy { padding-inline-end: 16px; }
+    .activity-copy strong { font-size: 1.2rem; }
+    .activity-icon { width: 52px; height: 52px; flex-basis: 52px; font-size: 1.8rem; }
+    .interview-card { margin-top: 16px; padding: 16px; }
+    .parent-row { margin-top: 8px; }
+    .lesson-head { margin-bottom: 12px; }
+    .learning-stage { min-height: 0; padding: 20px; }
+    .name-stage, .celebration { min-height: min(560px, calc(100svh - 100px)); }
+    .big-visual { min-height: 116px; font-size: 7rem; margin: 0 0 8px; }
+    .color-swatch { width: 116px; height: 116px; }
+    .stage-prompt { margin-bottom: 8px; }
+    .say-hint { margin: 8px 0 12px; }
+    .voice-controls { margin-bottom: 12px; }
+    .lesson-reward { min-height: 96px; margin-bottom: 12px; padding: 8px 12px; }
+    .lesson-mascot { width: 80px; height: 80px; flex-basis: 80px; }
+    .alphabet-grid { width: min(100%, 350px); align-self: center; margin: 4px 0 12px; }
+    .letter { min-height: 44px; }
+    .alphabet-now { margin: 0 0 12px; }
+    .song-panel { margin-top: 16px; padding-top: 12px; }
+    .song-panel p { margin-bottom: 8px; }
+    .interview-stage { padding: 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px 24px; align-items: start; }
+    .interview-prompt { grid-column: 1; grid-row: 1 / span 2; align-self: center; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+    .interview-scene { grid-column: 1; grid-row: 1; grid-template-columns: minmax(100px, .65fr) minmax(0, 1.35fr); gap: 16px; }
+    .mascot-stage { min-height: 240px; }
+    .mascot-image { max-height: 250px; }
+    .speech-bubble { padding: 20px 16px; }
+    .question { font-size: 1.8rem; margin-bottom: 12px; }
+    .answer-area { grid-column: 1; grid-row: 2; min-height: 48px; margin: 0; }
+    .answer-recorder { grid-column: 2; grid-row: 1; margin: 0; padding: 0 0 12px; border-block-start: 0; }
+    .recorder-intro p { margin-bottom: 8px; }
+    .record-status { margin: 8px 0 4px; min-height: 0; }
+    .treat-zone { grid-column: 2; grid-row: 2; padding: 12px; }
+    .auto-feeding { margin-bottom: 8px; }
+    .auto-feed-status { margin: 6px 0 4px; }
+    .treat-prompt { margin-bottom: 8px; }
+    .treat-counter { margin-top: 4px; }
+    .milestone-feedback { grid-column: 1; margin: 0; }
+    .interview-actions { grid-column: 1 / -1; margin-top: 0; flex-direction: row; }
+
+    @media (max-width: 700px) {
+      .interview-stage { display: flex; flex-direction: column; gap: 8px; padding: 12px; }
+      .interview-stage > * { width: 100%; }
+      .interview-prompt { gap: 8px; }
+      .interview-scene { grid-template-columns: minmax(80px, .55fr) minmax(0, 1.45fr); gap: 12px; }
+      .mascot-stage { min-height: 120px; }
+      .mascot-image { max-height: 136px; width: auto; max-width: 100%; }
+      .speech-bubble { padding: 12px; }
+      .sound-waves { display: none; }
+      .question-number { margin-bottom: 4px; }
+      .question { font-size: 1.35rem; margin-bottom: 8px; }
+      .speech-bubble .listen-button { min-height: 44px; }
+      .answer-area { min-height: 0; margin: 0; }
+      .answer-recorder { padding-bottom: 8px; }
+      .answer-recorder { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+      .recorder-intro, .recording-actions { grid-column: 1 / -1; }
+      .record-status { text-align: start; }
+      .answer-recorder .recording-privacy[open] { grid-column: 1 / -1; }
+      .auto-feeding { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px; }
+      .auto-feeding .recording-privacy { grid-column: 2; grid-row: 1; }
+      .auto-feeding .recording-privacy[open] { grid-column: 1 / -1; grid-row: auto; }
+      .auto-feed-status { grid-column: 1 / -1; }
+      .recorder-intro h3 { font-size: 1rem; }
+      .recorder-intro p { margin-bottom: 6px; }
+      .recording-actions { flex-direction: row; gap: 8px; }
+      .recording-actions button { width: auto; min-height: 44px; padding: 8px 14px; }
+      .recording-privacy { font-size: .8rem; }
+      .auto-feeding .listen-button { min-height: 44px; }
+      .treat-zone { padding: 8px; }
+      .treat-button { width: 44px; height: 44px; font-size: 1.8rem; }
+      .treat-tray { gap: 8px; }
+      .interview-actions { flex-wrap: nowrap; gap: 8px; }
+      .interview-actions button { width: auto; flex: 1; min-height: 48px; padding: 8px 12px; font-size: 1rem; }
+    }
+
+    @media (max-width: 580px) {
+      .app { padding-inline: 12px; }
+      .topbar { gap: 8px; }
+      .brand-mark { width: 28px; height: 28px; font-size: 1rem; border-radius: 8px; }
+      main { padding-top: 12px; }
+      .hero { margin-bottom: 12px; }
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+      .hello-chip { min-height: 28px; padding: 4px 12px; }
+      .progress-strip { padding: 8px 12px; margin-bottom: 12px; }
+      .activity { min-height: 84px; padding: 12px; gap: 8px; }
+      .activity[data-kind="alphabet"] { min-height: 72px; }
+      .activity-copy strong { font-size: 1.05rem; margin-bottom: 0; }
+      .activity-icon { width: 44px; height: 44px; flex-basis: 44px; font-size: 1.5rem; }
+      .interview-card { gap: 8px 12px; padding: 12px; margin-top: 12px; }
+      .interview-card h2 { font-size: 1.15rem; }
+      .interview-card .face { width: 44px; height: 44px; flex-basis: 44px; }
+      .interview-card button { min-height: 48px; }
+      .parent-row { margin-top: 4px; }
+      .lesson-head h1 { font-size: 1.5rem; }
+      .learning-stage { padding: 16px 12px; }
+      .action-row { flex-direction: row; flex-wrap: nowrap; gap: 8px; }
+      .action-row button { width: auto; flex: 1; min-height: 52px; padding: 8px 12px; font-size: 1rem; }
+      .name-mascot { max-height: 160px; }
+      .name-stage h1 { font-size: 2rem; }
+      .name-form { margin-top: 16px; }
+      .alphabet-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+      .alphabet-stage .action-row { flex-wrap: wrap; }
+      .alphabet-stage .action-row button { flex: 1 1 120px; }
+      .song-panel h2 { font-size: 1.1rem; }
+      .song-panel .song-link { min-height: 44px; padding: 8px 16px; }
+    }
+    @media (max-width: 360px) {
+      .alphabet-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">★</span><span id="brandText">Little Learner</span></div>
+      <div class="language-switch" role="tablist" aria-label="Choose language">
+        <button id="englishTab" role="tab" aria-selected="true" data-lang="en">English</button>
+        <button id="arabicTab" role="tab" aria-selected="false" data-lang="ar">العربية</button>
+        <button id="germanTab" role="tab" aria-selected="false" data-lang="de">Deutsch</button>
+        <button id="frenchTab" role="tab" aria-selected="false" data-lang="fr">Français</button>
+      </div>
+    </header>
+    <main id="appMain"></main>
+  </div>
+
+  <dialog id="parentDialog">
+    <div class="dialog-inner">
+      <div class="dialog-head"><h2 id="parentTitle">For grown-ups</h2><button class="close-dialog" id="closeDialog" aria-label="Close">×</button></div>
+      <p id="parentIntro"></p>
+      <ul class="tips" id="parentTips"></ul>
+      <button class="secondary-button" id="changeName"></button>
+      <button class="danger-button" id="resetProgress"></button>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/practice-copy.js"></script>
+  <script src="assets/practice-features.js"></script>
+  <script src="assets/auto-feeding.js"></script>
+  <script>
+    const savedChildName = (localStorage.getItem('littleLearnerName') || '').trim();
+    const state = {
+      lang: DATA[localStorage.getItem('littleLearnerLang')] ? localStorage.getItem('littleLearnerLang') : 'en',
+      completed: JSON.parse(localStorage.getItem('littleLearnerProgress') || '{}'),
+      childName: savedChildName, screen: savedChildName ? 'home' : 'name', lesson: null, item: 0, lessonTreatFed: false, lessonFeedback: '', interviewFeedback: '', celebrationMessage: '', interviewSession: [], interviewAdvancing: false, interview: 0, reveal: false, treatsFed: 0, interviewAutoAsk: false, alphabetRun: 0, alphabetPlaying: false,
+      voiceSpeed: localStorage.getItem('littleLearnerVoiceSpeed') === 'slow' ? 'slow' : 'normal'
+    };
+    const main = document.getElementById('appMain');
+    const parentDialog = document.getElementById('parentDialog');
+    const toast = document.getElementById('toast');
+    let speechRun = 0;
+    let mascotBlinkTimer;
+    let lionFeedTimer;
+    let praiseTimer;
+    let voiceCache = {};
+    let activeQuestionAudio = null;
+    let speechStartTimer;
+    let praising = false;
+    let afterVoice = null;
+    const praiseBags = new Map();
+    let feedAudioContext = null;
+    const questionAudioCache = new Map();
+
+    function t() { return DATA[state.lang]; }
+    function escapeHTML(value = '') { return String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[character])); }
+    function progressKey(kind) { return `${state.lang}-${kind}`; }
+    function completedCount() { return ['alphabet','sea','land','colors','shapes'].filter(k => state.completed[progressKey(k)]).length; }
+    function saveProgress() { localStorage.setItem('littleLearnerProgress', JSON.stringify(state.completed)); }
+    function setMascotState(mode = 'idle') {
+      const image = document.getElementById('interviewerMascot');
+      const stage = document.querySelector('.interview-stage');
+      if (!image || !stage) return;
+      const nextSource = `assets/lion-${mode}.webp`;
+      if (!image.src.endsWith(nextSource)) image.src = nextSource;
+      image.classList.toggle('speaking', mode === 'speaking');
+      stage.classList.toggle('mascot-speaking', mode === 'speaking');
+    }
+    function scheduleMascotBlink() {
+      clearTimeout(mascotBlinkTimer);
+      if (praising || activeQuestionAudio && !activeQuestionAudio.paused) return;
+      if (state.screen !== 'interview' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      mascotBlinkTimer = setTimeout(() => {
+        if (state.screen !== 'interview') return;
+        setMascotState('blink');
+        mascotBlinkTimer = setTimeout(() => { setMascotState('idle'); scheduleMascotBlink(); }, 190);
+      }, 2800 + Math.random() * 1800);
+    }
+    function stopSpeech() {
+      pauseAutoFeeding();
+      stopClapping();
+      speechRun += 1;
+      clearTimeout(mascotBlinkTimer);
+      clearTimeout(lionFeedTimer);
+      clearTimeout(praiseTimer);
+      clearTimeout(speechStartTimer);
+      praising = false;
+      afterVoice = null;
+      state.alphabetRun += 1;
+      state.alphabetPlaying = false;
+      if (activeQuestionAudio) {
+        activeQuestionAudio.onplaying = activeQuestionAudio.onended = activeQuestionAudio.onerror = null;
+        activeQuestionAudio.pause();
+        activeQuestionAudio.currentTime = 0;
+        activeQuestionAudio = null;
+      }
+      if ('speechSynthesis' in window && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
+      setLeoTalking(false);
+      document.querySelectorAll('.mascot-image.celebrate, .lesson-mascot.celebrate').forEach(lion => lion.classList.remove('celebrate'));
+      document.querySelectorAll('.letter.active').forEach(el => el.classList.remove('active'));
+      const playButton = document.getElementById('playAlphabet');
+      if (playButton) playButton.textContent = `🔊 ${t().alphabetPlay}`;
+      const now = document.getElementById('alphabetNow');
+      if (now) now.textContent = t().alphabetTap;
+    }
+    function selectedRate() { return state.voiceSpeed === 'slow' ? 0.82 : 1; }
+    function warmVoiceEngine() {
+      if (!('speechSynthesis' in window)) return;
+      speechSynthesis.getVoices();
+      speechSynthesis.resume();
+    }
+    function speak(text, rate = selectedRate(), hooks = {}) {
+      stopSpeech();
+      praising = Boolean(hooks.isPraise);
+      afterVoice = hooks.afterVoice || null;
+      if (!('speechSynthesis' in window)) { showToast(t().speechUnavailable); if (hooks.onError) hooks.onError(); return; }
+      const run = speechRun;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = t().locale; utterance.rate = rate; utterance.pitch = 1;
+      const voice = preferredVoice();
+      if (voice) utterance.voice = voice;
+      let ended = false;
+      const finish = failed => {
+        if (ended || run !== speechRun) return;
+        ended = true;
+        clearTimeout(speechStartTimer);
+        const callback = failed ? hooks.onError : hooks.onEnd;
+        if (callback) callback();
+      };
+      utterance.onstart = () => { if (run === speechRun && hooks.onStart) hooks.onStart(); };
+      utterance.onend = () => finish(false);
+      utterance.onerror = () => finish(true);
+      speechStartTimer = setTimeout(() => {
+        if (run !== speechRun) return;
+        speechSynthesis.cancel();
+        finish(true);
+      }, 12000);
+      speechSynthesis.resume();
+      speechSynthesis.speak(utterance);
+    }
+    function nextPraise() {
+      let bag = praiseBags.get(state.lang);
+      if (!bag || !bag.remaining.length) {
+        const previous = bag && bag.last;
+        const remaining = t().encouragements.map((_, index) => index);
+        for (let i = remaining.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+        }
+        if (remaining[remaining.length - 1] === previous) {
+          [remaining[0], remaining[remaining.length - 1]] = [remaining[remaining.length - 1], remaining[0]];
+        }
+        bag = { remaining, last: previous };
+        praiseBags.set(state.lang, bag);
+      }
+      const index = bag.remaining.pop();
+      bag.last = index;
+      const text = t().encouragements[index];
+      return { text, display: t().praiseName(text, state.childName), path: `audio/${state.lang}/praise${index + 1}.mp3?voice=4` };
+    }
+    function setLeoTalking(talking) {
+      clearTimeout(mascotBlinkTimer);
+      setMascotState(talking ? 'speaking' : 'idle');
+      const lion = document.getElementById('lessonMascot');
+      if (lion) {
+        lion.src = `assets/lion-${talking ? 'speaking' : 'idle'}.webp`;
+        lion.classList.toggle('speaking', talking);
+      }
+      if (!talking) {scheduleMascotBlink(); resumeAutoFeeding();}
+    }
+    function recordedAudioFor(path) {
+      if (questionAudioCache.has(path)) return questionAudioCache.get(path);
+      const audio = new Audio(path);
+      audio.preload = 'auto';
+      questionAudioCache.set(path, audio);
+      audio.load();
+      return audio;
+    }
+    function playVoiceClip(audio, text, hooks = {}) {
+      prepareForLeoSpeech();
+      stopSpeech();
+      praising = Boolean(hooks.isPraise);
+      afterVoice = hooks.afterVoice || null;
+      const run = speechRun;
+      let finished = false;
+      const continueAfterVoice = () => {
+        const next = hooks.onEnd || afterVoice;
+        afterVoice = null;
+        praising = false;
+        setLeoTalking(false);
+        if (next) next();
+      };
+      const finish = () => {
+        if (finished || run !== speechRun) return;
+        finished = true;
+        clearTimeout(speechStartTimer);
+        audio.onplaying = audio.onended = audio.onerror = null;
+        activeQuestionAudio = null;
+        continueAfterVoice();
+      };
+      const fallback = () => {
+        if (finished || run !== speechRun) return;
+        finished = true;
+        clearTimeout(speechStartTimer);
+        audio.onplaying = audio.onended = audio.onerror = null;
+        audio.pause();
+        activeQuestionAudio = null;
+        speak(text, selectedRate(), {
+          isPraise: hooks.isPraise, afterVoice,
+          onStart: () => setLeoTalking(true),
+          onEnd: continueAfterVoice, onError: continueAfterVoice
+        });
+      };
+      activeQuestionAudio = audio;
+      audio.currentTime = 0;
+      audio.playbackRate = state.voiceSpeed === 'slow' ? 0.85 : 1;
+      audio.preservesPitch = true;
+      audio.onplaying = () => {
+        if (run !== speechRun) return;
+        clearTimeout(speechStartTimer);
+        setLeoTalking(true);
+      };
+      audio.onended = finish;
+      audio.onerror = fallback;
+      speechStartTimer = setTimeout(fallback, 8000);
+      const started = audio.play();
+      if (started) started.catch(fallback);
+    }
+    function speakPraise(onEnd, feedback = nextPraise()) {
+      stopSpeech();
+      praising = true;
+      const run = speechRun;
+      praiseTimer = setTimeout(() => {
+        if (run !== speechRun) return;
+        playVoiceClip(recordedAudioFor(feedback.path), feedback.text, { onEnd, isPraise: true, afterVoice });
+      }, 300);
+      return feedback;
+    }
+    function preloadInterviewAudio() {
+      t().interviews.forEach((question, index) => question.variants.forEach((_, variant) => recordedAudioFor(`audio/${state.lang}/q${index + 1}${variant ? '-v' + (variant + 1) : ''}.m4a?voice=4`)));
+      for (let i = 0; i < t().encouragements.length; i += 1) recordedAudioFor(`audio/${state.lang}/praise${i + 1}.mp3?voice=4`);
+    }
+    function askInterviewQuestion(question) {
+      playVoiceClip(recordedAudioFor(question.path), question.q);
+    }
+    function playFeedSound() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!feedAudioContext) feedAudioContext = new AudioCtx();
+      const ctx = feedAudioContext;
+      ctx.resume();
+      const start = ctx.currentTime;
+      const crunch = (offset, duration, frequency) => {
+        const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duration), ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < data.length; i += 1) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2.4);
+        const source = ctx.createBufferSource();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+        source.buffer = buffer; filter.type = 'bandpass'; filter.frequency.value = frequency; filter.Q.value = .8;
+        gain.gain.setValueAtTime(.0001, start + offset);
+        gain.gain.exponentialRampToValueAtTime(.22, start + offset + .008);
+        gain.gain.exponentialRampToValueAtTime(.0001, start + offset + duration);
+        source.connect(filter).connect(gain).connect(ctx.destination);
+        source.start(start + offset); source.stop(start + offset + duration);
+      };
+      crunch(0, .12, 1900); crunch(.115, .1, 2600);
+      const nom = ctx.createOscillator();
+      const nomGain = ctx.createGain();
+      nom.type = 'triangle'; nom.frequency.setValueAtTime(150, start); nom.frequency.exponentialRampToValueAtTime(82, start + .18);
+      nomGain.gain.setValueAtTime(.0001, start); nomGain.gain.exponentialRampToValueAtTime(.12, start + .015); nomGain.gain.exponentialRampToValueAtTime(.0001, start + .2);
+      nom.connect(nomGain).connect(ctx.destination); nom.start(start); nom.stop(start + .21);
+    }
+    function animateTreatToMascot(button, lion) {
+      if (!lion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const from = button.getBoundingClientRect();
+      const to = lion.getBoundingClientRect();
+      const flying = document.createElement('span');
+      flying.className = 'flying-treat'; flying.textContent = '🍪';
+      flying.style.left = `${from.left}px`; flying.style.top = `${from.top}px`;
+      flying.style.width = `${from.width}px`; flying.style.height = `${from.height}px`;
+      document.body.appendChild(flying);
+      const dx = (to.left + to.width * .55) - (from.left + from.width * .5);
+      const dy = (to.top + to.height * .46) - (from.top + from.height * .5);
+      flying.animate([{transform:'translate(0, 0) scale(1)',opacity:1},{offset:.82,transform:`translate(${dx * .88}px, ${dy * .88}px) scale(.72) rotate(12deg)`,opacity:1},{transform:`translate(${dx}px, ${dy}px) scale(.18) rotate(24deg)`,opacity:0}], {duration:680,easing:'cubic-bezier(.22,1,.36,1)'}).onfinish=()=>flying.remove();
+    }
+    function feedLion(button, fromSpeech = false) {
+      if (button.disabled || state.interviewAdvancing || state.treatsFed >= 5) return;
+      if (!fromSpeech) prepareForLeoSpeech();
+      const lion = document.getElementById('interviewerMascot');
+      button.disabled = true; button.classList.add('fed'); state.treatsFed += 1;
+      playFeedSound(); animateTreatToMascot(button, lion);
+      state.interviewFeedback = t().treatReplies[(state.treatsFed - 1) % t().treatReplies.length];
+      const counter = document.getElementById('treatCounter');
+      if (counter) counter.textContent = `${state.interviewFeedback} ${t().treatCount(state.treatsFed)}`;
+      if (lion) {
+        clearTimeout(lionFeedTimer); lion.classList.add('celebrate');
+        lionFeedTimer = setTimeout(() => { lion.classList.remove('celebrate'); if (!fromSpeech) resumeAutoFeeding(); }, 760);
+      }
+    }
+    function feedLessonLion(button) {
+      if (button.disabled || state.lessonTreatFed) return;
+      const lion = document.getElementById('lessonMascot');
+      button.disabled = true; button.classList.add('fed'); state.lessonTreatFed = true;
+      const feedback = nextPraise();
+      speakPraise(undefined, feedback);
+      playFeedSound(); animateTreatToMascot(button, lion);
+      const status = document.getElementById('lessonFeedStatus');
+      state.lessonFeedback = `${feedback.display} ${t().lessonFed}`;
+      if (status) status.textContent = state.lessonFeedback;
+      if (lion) {
+        clearTimeout(lionFeedTimer); lion.src='assets/lion-speaking.webp'; lion.classList.add('speaking','celebrate');
+        lionFeedTimer = setTimeout(() => { lion.classList.remove('celebrate'); }, 760);
+      }
+    }
+    function preferredVoice() {
+      if (!('speechSynthesis' in window)) return null;
+      if (voiceCache[state.lang]) return voiceCache[state.lang];
+      const voices = speechSynthesis.getVoices();
+      const language = state.lang;
+      const matching = voices.filter(voice => voice.lang.toLowerCase().startsWith(language));
+      const preferredNames = state.lang === 'ar'
+        ? ['Natural','Majed','Maged','Laila','Tarik','Hamed']
+        : state.lang === 'fr'
+          ? ['Natural','Denise','Audrey','Amélie','Thomas','Google français']
+        : state.lang === 'de'
+          ? ['Natural','Anna','Petra','Markus','Katja','Conrad','Google Deutsch']
+          : ['Natural','Samantha','Ava','Allison','Aria','Jenny','Google US English'];
+      const chosen = matching.find(voice => /natural|premium|enhanced|neural/i.test(voice.name))
+        || preferredNames.map(name => matching.find(voice => voice.name.toLowerCase().includes(name.toLowerCase()))).find(Boolean)
+        || matching.find(voice => /premium|enhanced|neural/i.test(voice.name))
+        || matching.find(voice => voice.localService) || matching[0] || null;
+      if (chosen) voiceCache[state.lang] = chosen;
+      return chosen;
+    }
+    function voiceControlsMarkup() {
+      const d=t();
+      return `<div class="voice-controls" aria-label="${d.voiceSpeed}"><span>${d.voiceSpeed}:</span><button data-speed="slow" aria-pressed="${state.voiceSpeed==='slow'}">🐢 ${d.voiceSlow}</button><button data-speed="normal" aria-pressed="${state.voiceSpeed==='normal'}">▶ ${d.voiceNormal}</button></div>`;
+    }
+    function bindVoiceControls() {
+      document.querySelectorAll('[data-speed]').forEach(button => button.addEventListener('click', () => {
+        stopSpeech(); state.voiceSpeed=button.dataset.speed; localStorage.setItem('littleLearnerVoiceSpeed', state.voiceSpeed); render();
+      }));
+    }
+    function showToast(message) { toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1800); }
+    function starsMarkup(count = completedCount()) { return Array.from({length:5}, (_,i) => `<span class="star ${i < count ? 'earned' : ''}" aria-hidden="true">★</span>`).join(''); }
+
+    function setLanguage(lang) {
+      resetAutoFeeding(true);
+      lang = DATA[lang] ? lang : 'en';
+      state.interviewAdvancing = false;
+      clearAnswerRecording();
+      stopSpeech(); state.lang = lang; state.screen = state.childName ? 'home' : 'name'; state.lesson = null;
+      localStorage.setItem('littleLearnerLang', lang);
+      document.documentElement.lang = lang; document.documentElement.dir = t().dir;
+      document.querySelectorAll('[data-lang]').forEach(button => button.setAttribute('aria-selected', String(button.dataset.lang === lang)));
+      document.querySelector('.language-switch').setAttribute('aria-label', t().languageLabel);
+      document.getElementById('brandText').textContent = t().brand;
+      render();
+    }
+
+    function renderName() {
+      const d = t();
+      main.innerHTML = `<section class="screen"><div class="learning-stage name-stage">
+        <img class="name-mascot" src="assets/lion-idle.webp" alt="${d.mascotAlt}" decoding="async">
+        <h1>${d.nameTitle}</h1><p>${d.nameText}</p>
+        <form class="name-form" id="nameForm"><label for="childName">${d.nameLabel}</label><input id="childName" name="childName" type="text" maxlength="24" autocomplete="given-name" placeholder="${d.namePlaceholder}" required><button class="primary-button" type="submit">${d.nameButton}</button></form>
+      </div></section>`;
+      const input = document.getElementById('childName');
+      document.getElementById('nameForm').addEventListener('submit', event => {
+        event.preventDefault();
+        const name = input.value.trim().replace(/\s+/g, ' ').slice(0, 24);
+        if (!name) { input.focus(); return; }
+        state.childName = name;
+        localStorage.setItem('littleLearnerName', name);
+        warmVoiceEngine();
+        state.screen = 'home';
+        render();
+      });
+      requestAnimationFrame(() => input.focus());
+    }
+
+    function renderHome() {
+      const d = t();
+      preloadInterviewAudio();
+      main.innerHTML = `<section class="screen">
+        <div class="hero"><span class="hello-chip">☀️ ${state.childName ? d.helloName(escapeHTML(state.childName)) : d.hello}</span><h1>${d.title}</h1><p>${d.subtitle}</p></div>
+        <div class="progress-strip"><span class="progress-copy">${d.progress}</span><div class="stars" aria-label="${d.progressLabel(completedCount())}">${starsMarkup()}</div></div>
+        <div class="activity-list">
+          ${Object.entries(d.activities).map(([key,a]) => `<button class="activity ${state.completed[progressKey(key)] ? 'completed' : ''}" data-kind="${key}" data-lesson="${key}">
+            <span class="activity-icon" aria-hidden="true">${a.icon}</span><span class="activity-copy"><strong>${a.title}</strong><span>${a.sub}</span></span><span class="activity-arrow" aria-hidden="true">›</span><span class="done-badge" aria-label="${d.completedLabel}">✓</span>
+          </button>`).join('')}
+        </div>
+        <section class="interview-card"><img class="face" src="assets/lion-idle.webp" alt="" decoding="async"><div><h2>${d.interviewTitle}</h2><p>${d.interviewText}</p></div><button id="startInterview">${d.interviewButton}</button></section>
+        <div class="parent-row"><button class="text-button" id="openParent">${d.parentLink}</button></div>
+      </section>`;
+      document.querySelectorAll('[data-lesson]').forEach(btn => btn.addEventListener('click', () => openLesson(btn.dataset.lesson)));
+      document.getElementById('startInterview').addEventListener('click', startInterviewSession);
+      document.getElementById('openParent').addEventListener('click', openParent);
+    }
+
+    function openLesson(kind) { clearAnswerRecording(); stopSpeech(); state.screen = 'lesson'; state.lesson = kind; state.item = 0; state.lessonTreatFed = false; render(); }
+    function itemVisualMarkup(item) {
+      if (state.lesson === 'colors' && item[2]) return `<div class="big-visual"><span class="color-swatch" style="--swatch:${item[2]}" aria-hidden="true"></span></div>`;
+      return `<div class="big-visual ${state.lesson==='shapes'?'shape-visual':''}" aria-hidden="true">${item[0]}</div>`;
+    }
+    function renderLesson() {
+      const d=t(), lesson=d.activities[state.lesson];
+      if (state.lesson === 'alphabet') return renderAlphabet();
+      const item=lesson.items[state.item], total=lesson.items.length;
+      main.innerHTML = `<section class="screen">
+        <div class="lesson-head"><button class="back" aria-label="${d.back}" id="backHome">‹</button><h1>${lesson.title}</h1><span class="lesson-count">${state.item+1} / ${total}</span></div>
+        <div class="learning-stage"><span class="set-badge">${state.item < 5 ? '★ ' + d.schoolSet : '＋ ' + d.bonusSet}</span><p class="stage-prompt">${lesson.prompt}</p>${itemVisualMarkup(item)}<h2 class="word ${item[1].length > 14 ? 'long-word' : ''}">${item[1]}</h2><p class="say-hint">${d.say}</p>${voiceControlsMarkup()}
+          <div class="lesson-reward"><img class="lesson-mascot" id="lessonMascot" src="assets/lion-idle.webp" alt="${d.mascotAlt}" decoding="async"><div class="lesson-feed-copy"><strong>${d.lessonTreatPrompt}</strong><button class="lesson-cookie ${state.lessonTreatFed?'fed':''}" id="lessonCookie" ${state.lessonTreatFed?'disabled':''} aria-label="${d.lessonFeed}">🍪</button><span class="lesson-feed-status" id="lessonFeedStatus" role="status" aria-live="polite">${state.lessonTreatFed?escapeHTML(state.lessonFeedback):''}</span></div></div>
+          <div class="action-row"><button class="listen-button" id="listenWord">🔊 ${d.listen}</button><button class="next-button" id="nextItem">${state.item === total-1 ? d.finish : d.next} ${state.item === total-1 ? '★' : '→'}</button></div>
+        </div></section>`;
+      document.getElementById('backHome').addEventListener('click', goHome);
+      bindVoiceControls();
+      document.getElementById('listenWord').addEventListener('click', () => speak(item[1]));
+      document.getElementById('lessonCookie').addEventListener('click', e => feedLessonLion(e.currentTarget));
+      document.getElementById('nextItem').addEventListener('click', () => {
+        stopSpeech();
+        state.lessonTreatFed = false;
+        if (state.item === 4 && total > 5) {
+          state.completed[progressKey(state.lesson)] = true; saveProgress(); state.screen = 'more-choice'; render();
+        } else if (state.item < total-1) { state.item++; render(); } else completeLesson();
+      });
+    }
+
+    function renderMoreChoice() {
+      const d=t();
+      main.innerHTML=`<section class="screen"><div class="learning-stage celebration"><div class="trophy" aria-hidden="true">🌟</div><h2>${d.schoolFiveTitle}</h2><p>${d.schoolFiveText}</p><div class="choice-actions"><button class="primary-button" id="learnMore">${d.learnMore} ＋</button><button class="listen-button" id="stopHere">${d.stopHere} ✓</button></div></div></section>`;
+      playVoiceClip(recordedAudioFor(`audio/${state.lang}/school-complete.mp3?voice=4`), d.schoolSpeech, {onEnd:() => playClapping('question')});
+      document.getElementById('learnMore').addEventListener('click',()=>{stopSpeech();state.item=5;state.lessonTreatFed=false;state.screen='lesson';render();});
+      document.getElementById('stopHere').addEventListener('click',goHome);
+    }
+
+    function renderAlphabet() {
+      const d=t(), lesson=d.activities.alphabet, letters=lesson.letters;
+      main.innerHTML = `<section class="screen"><div class="lesson-head"><button class="back" aria-label="${d.back}" id="backHome">‹</button><h1>${lesson.title}</h1></div>
+        <div class="learning-stage alphabet-stage"><p class="stage-prompt">${lesson.prompt}</p><div class="alphabet-grid ${state.lang==='ar'?'arabic-grid':''}">${letters.map((l,i)=>`<button class="letter" data-letter="${i}" aria-label="${l}">${l}</button>`).join('')}</div><div class="alphabet-now" id="alphabetNow" aria-live="polite">${d.alphabetTap}</div>${voiceControlsMarkup()}
+        <div class="action-row"><button class="primary-button" id="playAlphabet">🔊 ${d.alphabetPlay}</button><button class="next-button" id="finishAlphabet">${d.finish} ★</button></div>
+        <details class='song-panel'><summary>🎵 ${d.songTitle}</summary><p>${d.songText}</p>${state.lang==='fr'?`<button class='listen-button' id='playFrenchAlphabet'>▶ ${d.songPlay}</button>`:`<a class='listen-button song-link' id='playSong' href='https://www.youtube.com/watch?v=vD98OvvDNEs' target='_blank' rel='noopener'>▶ ${d.songPlay}</a><small class='song-credit'>${d.songCredit} · ${d.songNewTab}</small>`}</details></div></section>`;
+      document.getElementById('backHome').addEventListener('click', goHome);
+      document.getElementById('playAlphabet').addEventListener('click', playAlphabet);
+      document.getElementById('finishAlphabet').addEventListener('click', completeLesson);
+      bindVoiceControls();
+      document.getElementById('playFrenchAlphabet')?.addEventListener('click', playAlphabet);
+      document.getElementById('playSong')?.addEventListener('click', stopSpeech);
+      document.querySelectorAll('[data-letter]').forEach(button => button.addEventListener('click', () => playSingleLetter(Number(button.dataset.letter))));
+    }
+
+    function alphabetSpokenNames() {
+      if (state.lang === 'ar') return ['ألف','باء','تاء','ثاء','جيم','حاء','خاء','دال','ذال','راء','زاي','سين','شين','صاد','ضاد','طاء','ظاء','عين','غين','فاء','قاف','كاف','لام','ميم','نون','هاء','واو','ياء'];
+      if (state.lang === 'fr') return ['a','bé','cé','dé','e','effe','gé','ache','i','ji','ka','elle','emme','enne','o','pé','ku','erre','esse','té','u','vé','double vé','iks','i grec','zède'];
+      if (state.lang === 'de') return ['A','Beh','Zeh','Deh','Eh','Eff','Geh','Hah','Ih','Jott','Kah','Ell','Emm','Enn','Oh','Peh','Kuh','Err','Ess','Teh','Uh','Fau','Weh','Iks','Ypsilon','Zett'];
+      return ['ay','bee','see','dee','ee','eff','gee','aitch','eye','jay','kay','ell','em','en','oh','pee','cue','are','ess','tee','you','vee','double you','ex','why','zee'];
+    }
+
+    function setActiveLetter(index) {
+      document.querySelectorAll('.letter.active').forEach(el => el.classList.remove('active'));
+      document.querySelector(`[data-letter="${index}"]`)?.classList.add('active');
+      const now = document.getElementById('alphabetNow');
+      if (now) now.textContent = `${t().alphabetNow}: ${t().activities.alphabet.letters[index]}`;
+    }
+
+    function playSingleLetter(index) {
+      stopSpeech();
+      if (!('speechSynthesis' in window)) { showToast(t().speechUnavailable); return; }
+      setActiveLetter(index);
+      const run = state.alphabetRun;
+      const utterance = new SpeechSynthesisUtterance(alphabetSpokenNames()[index]);
+      utterance.lang = t().locale; utterance.rate = selectedRate(); utterance.pitch = 1;
+      const voice = preferredVoice(); if (voice) utterance.voice = voice;
+      utterance.onend = utterance.onerror = () => { if (run === state.alphabetRun) setTimeout(() => stopSpeech(), 180); };
+      speechSynthesis.resume();
+      speechSynthesis.speak(utterance);
+    }
+
+    function playAlphabet() {
+      if (state.alphabetPlaying) { stopSpeech(); return; }
+      stopSpeech();
+      playSpokenAlphabet();
+    }
+
+    function playSpokenAlphabet() {
+      if (!('speechSynthesis' in window)) { showToast(t().speechUnavailable); return; }
+      playWholeAlphabet();
+    }
+
+    function playWholeAlphabet() {
+      const spoken = alphabetSpokenNames();
+      const run = state.alphabetRun;
+      const offsets = [];
+      let cursor = 0;
+      const phrase = spoken.map((name) => { offsets.push(cursor); cursor += name.length + 2; return name; }).join(', ');
+      const stepMs = state.voiceSpeed === 'slow' ? (state.lang === 'ar' ? 800 : 720) : (state.lang === 'ar' ? 640 : 560);
+      let visualIndex = 0;
+      let finished = false;
+      let heardBoundary = false;
+      let visualTimer;
+      let safetyTimer;
+
+      state.alphabetPlaying = true;
+      setActiveLetter(0);
+      document.getElementById('playAlphabet').textContent = `■ ${t().alphabetStop}`;
+
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        clearInterval(visualTimer);
+        clearTimeout(safetyTimer);
+        if (run === state.alphabetRun) stopSpeech();
+      };
+
+      const utterance = new SpeechSynthesisUtterance(phrase);
+      utterance.lang = t().locale;
+      utterance.rate = selectedRate();
+      utterance.pitch = 1;
+      const voice = preferredVoice();
+      if (voice) utterance.voice = voice;
+      utterance.onboundary = (event) => {
+        if (run !== state.alphabetRun || typeof event.charIndex !== 'number') return;
+        if (!heardBoundary) { heardBoundary = true; clearInterval(visualTimer); }
+        let boundaryIndex = 0;
+        for (let i = 0; i < offsets.length; i += 1) {
+          if (offsets[i] <= event.charIndex) boundaryIndex = i; else break;
+        }
+        visualIndex = boundaryIndex;
+        setActiveLetter(boundaryIndex);
+      };
+      utterance.onend = finish;
+      utterance.onerror = finish;
+
+      visualTimer = setInterval(() => {
+        if (run !== state.alphabetRun) { clearInterval(visualTimer); return; }
+        visualIndex = Math.min(visualIndex + 1, spoken.length - 1);
+        setActiveLetter(visualIndex);
+      }, stepMs);
+      safetyTimer = setTimeout(finish, (stepMs * spoken.length) + 5000);
+      speechSynthesis.resume();
+      speechSynthesis.speak(utterance);
+    }
+
+    function completeLesson() { stopSpeech(); state.completed[progressKey(state.lesson)]=true; saveProgress(); state.screen='celebration'; render(); }
+    function renderCelebration() {
+      const d=t(); main.innerHTML=`<section class="screen"><div class="learning-stage celebration"><div class="trophy" aria-hidden="true">🌟</div><h2>${d.doneTitle}</h2><p>${d.doneText}</p><button class="primary-button" id="celebrationHome">${d.home}</button></div></section>`;
+      playVoiceClip(recordedAudioFor(`audio/${state.lang}/lesson-complete.mp3?voice=4`), d.lessonSpeech, {onEnd:() => playClapping('complete')}); document.getElementById('celebrationHome').addEventListener('click', goHome);
+    }
+
+    function goHome(){resetAutoFeeding(true);clearAnswerRecording();stopSpeech();state.interviewAdvancing=false;state.screen='home';state.lesson=null;render();}
+
+    function openParent(){const d=t();document.getElementById('parentTitle').textContent=d.parentTitle;document.getElementById('parentIntro').textContent=d.parentIntro;document.getElementById('parentTips').innerHTML=d.tips.map(x=>`<li>${x}</li>`).join('');document.getElementById('changeName').textContent=d.changeName;document.getElementById('resetProgress').textContent=d.reset;parentDialog.showModal();}
+    document.getElementById('closeDialog').addEventListener('click',()=>parentDialog.close());
+    document.getElementById('changeName').addEventListener('click',()=>{clearAnswerRecording();stopSpeech();state.childName='';localStorage.removeItem('littleLearnerName');parentDialog.close();state.screen='name';render();});
+    document.getElementById('resetProgress').addEventListener('click',()=>{state.completed={};saveProgress();parentDialog.close();showToast(t().resetDone);render();});
+    parentDialog.addEventListener('click',e=>{if(e.target===parentDialog)parentDialog.close();});
+    document.querySelectorAll('[data-lang]').forEach(btn=>btn.addEventListener('click',()=>setLanguage(btn.dataset.lang)));
+    document.addEventListener('pointerdown', warmVoiceEngine, {once:true, capture:true});
+    if ('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged',()=>{ voiceCache={}; warmVoiceEngine(); });
+    window.addEventListener('beforeunload',()=>{resetAutoFeeding(true);clearAnswerRecording();stopSpeech();});
+
+    function render(){
+      if(state.screen==='name')renderName();else if(state.screen==='home')renderHome();else if(state.screen==='lesson')renderLesson();else if(state.screen==='more-choice')renderMoreChoice();else if(state.screen==='celebration')renderCelebration();else if(state.screen==='interview')renderInterview();
+      requestAnimationFrame(() => window.scrollTo(0, 0));
+    }
+    setLanguage(state.lang);
+  </script>
+</body>
+</html>
